@@ -1,0 +1,64 @@
+{
+  "name": "wa-downloader-desktop",
+  "productName": "WA Downloader",
+  "version": "1.0.0",
+  "description": "WA Downloader — Windows & Linux",
+  "main": "src/main.js",
+  "private": true,
+  "scripts": {
+    "build:engine": "node scripts/build-engine.js",
+    "start": "npm run build:engine && electron .",
+    "web": "npm run build:engine && node src/server.js",
+    "dist:win": "npm run build:engine && electron-builder --win portable --x64 --publish never",
+    "dist:linux": "npm run build:engine && electron-builder --linux AppImage tar.gz --x64 --publish never"
+  },
+  "devDependencies": {
+    "@whiskeysockets/baileys": "7.0.0-rc14",
+    "pino": "^9.6.0",
+    "esbuild": "^0.23.1",
+    "electron": "^31.7.7",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.example.wadl.desktop",
+    "productName": "WA Downloader",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "package.json",
+      "src/main.js",
+      "src/preload.js",
+      "build/icon.png",
+      "renderer/**/*",
+      "dist/engine.js"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.png"
+    },
+    "portable": {
+      "artifactName": "WA-Downloader-${version}-portable.exe"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "tar.gz"
+      ],
+      "category": "Network",
+      "icon": "build/icon.png",
+      "artifactName": "WA-Downloader-${version}.${ext}",
+      "executableArgs": [
+        "--no-sandbox"
+      ]
+    }
+  },
+  "author": "WA Downloader"
+}
